@@ -1,0 +1,42 @@
+/* fondo.css — animación de constelaciones en fondo oscuro */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: radial-gradient(circle at bottom, #020111 0%, #000 100%);
+  overflow: hidden;
+}
+
+/* Canvas de estrellas */
+canvas#stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: transparent;
+}
+
+/* Suaviza la transición de brillo general */
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+#stars {
+  animation: twinkle 3s ease-in-out infinite alternate;
+}
+
+/* Estilo opcional de “brillo” general del cielo */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
