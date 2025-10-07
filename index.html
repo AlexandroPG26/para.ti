@@ -128,9 +128,11 @@
       <img src="pau.jpg" alt="Foto especial" />
     </div>
   </div>
+<!-- Scripts -->
+<script src="fondo.js"></script>
 
-  <script>
-    // Secuencia principal
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
     const btn1 = document.getElementById('btn1');
     const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
@@ -165,9 +167,10 @@
         }
       }, 70);
     }
-  </script>
+  });
+</script>
 
-  <!-- Script del fondo animado -->
-  <script src="fondo.js"></script>
+ 
 </body>
 </html>
+
