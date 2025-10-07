@@ -18,14 +18,16 @@
     canvas#stars { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; }
 
     .center {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      height: 100vh;
-      text-align: center;
-      position: relative;
-      z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    padding: 40px 20px 60px;
+    box-sizing: border-box;
     }
 
     button {
@@ -168,3 +170,4 @@
   </script>
 </body>
 </html>
+
