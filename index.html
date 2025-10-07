@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Para Paula 💐 🌌</title>
 
-  <!-- Estilos generales y fondo animado -->
   <link rel="stylesheet" href="style.css">
 
   <style>
@@ -13,17 +12,20 @@
       font-family: 'Poppins', sans-serif;
       color: #fff;
       overflow: hidden;
+      background: radial-gradient(circle at bottom, #020111 0%, #000 100%);
     }
+
+    canvas#stars { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; }
 
     .center {
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       height: 100vh;
       text-align: center;
-      flex-direction: column;
-      z-index: 2;
       position: relative;
+      z-index: 2;
     }
 
     button {
@@ -36,141 +38,133 @@
       font-size: 1.2rem;
       cursor: pointer;
       box-shadow: 0 0 20px rgba(255,255,255,0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform .3s ease, box-shadow .3s ease;
+      position: relative;
+      z-index: 2;
     }
-
-    button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 30px rgba(255,255,255,0.4);
-    }
+    button:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,255,255,0.4); }
 
     .hidden { display: none; }
+    .fade { animation: fadein 1.2s ease forwards; }
+    @keyframes fadein { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
-    .fade { animation: fadein 2s ease forwards; }
-    @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+    /* Tarjetas con efecto de aparición */
+    .message-box, .spotify-box, .photo-card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 20px 28px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.18);
+      backdrop-filter: blur(6px);
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 900ms ease, transform 900ms ease;
+      margin-top: 18px;
+    }
+    .show { opacity: 1; transform: translateY(0); }
 
-    .typing {
-      border-right: 2px solid #fff;
-      white-space: pre-wrap;
+    /* Pastel bonito con borde brillante animado (mensaje principal) */
+    .message-box.pastel {
+      position: relative;
+      background: linear-gradient(145deg, rgba(255,192,203,0.22), rgba(255,182,193,0.12));
+      border: 1px solid rgba(255,182,193,0.45);
+      box-shadow: 0 0 25px rgba(255,192,203,0.25);
+      color: #ffe4f0;
+      text-shadow: 0 0 6px rgba(255,210,230,0.7);
       overflow: hidden;
     }
-
-    .spotify-box, .photo-box {
-      margin-top: 30px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 20px 30px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.2);
-      backdrop-filter: blur(6px);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 2s ease, transform 1.5s ease;
+    .message-box.pastel::before {
+      content: ""; position: absolute; inset: -2px; border-radius: 18px;
+      background: linear-gradient(120deg, #ff9ecb, #ffb6c1, #ffcce1, #ff9ecb);
+      background-size: 400% 400%; filter: blur(8px); opacity: .55;
+      animation: pastelGlow 6s ease infinite; z-index: -1;
     }
+    @keyframes pastelGlow { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    .message-box.pastel h2 { font-size: 1.3rem; margin: 0 0 6px; color: #ffd9ec; }
+    .message-box.pastel p { margin: 0; font-size: 1.05rem; color: #fff0f7; opacity: .96; }
 
-    .spotify-box.show, .photo-box.show {
-      opacity: 1;
-      transform: translateY(0);
+    /* Imagen de rosas en la pantalla 1 (debajo del botón) */
+    .roses-container {
+      position: relative; width: 80%; max-width: 500px; margin-top: 20px;
+      border-radius: 20px; overflow: hidden; box-shadow: 0 0 20px rgba(255, 182, 193, 0.3);
     }
+    .roses-container img { width: 100%; display: block; object-fit: cover; filter: brightness(85%); }
+    .roses-container::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.25); }
 
-    .btn-spotify {
-      display: inline-block;
-      text-decoration: none;
-      background: linear-gradient(90deg, #1DB954, #1ed760);
-      color: white;
-      font-weight: bold;
-      padding: 12px 24px;
-      border-radius: 30px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      margin-top: 10px;
-    }
-
-    .btn-spotify:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(30,215,96,0.6);
-    }
-
-    .photo-box img {
-      max-width: 280px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.3);
-      transition: transform 0.5s ease;
-    }
-
-    .photo-box img:hover {
-      transform: scale(1.05);
+    /* Responsive */
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      .roses-container { width: 90%; }
     }
   </style>
 </head>
+
 <body>
   <canvas id="stars"></canvas>
 
+  <!-- Pantalla 1 -->
   <div id="step1" class="center fade">
     <button id="btn1">Presiona aquí 👇</button>
+    <div class="roses-container">
+      <img src="rosas.jpg" alt="Rosas de fondo">
+    </div>
   </div>
 
+  <!-- Pantalla 2 -->
   <div id="step2" class="center hidden">
     <h2>Hay algo que te quiero mostrar...</h2>
   </div>
 
+  <!-- Pantalla 3 -->
   <div id="step3" class="center hidden">
     <h1>Para <span id="para">Paula 🤍</span></h1>
-    <p id="typed" class="typing"></p>
-    <p><em>De <span id="de">Alexandro 🥺</span></em></p>
+
+    <div id="message" class="message message-box pastel">
+      <h2>✨ Tu luz brilla más que todas las estrellas del cielo ✨</h2>
+      <p>Porque incluso en la noche más oscura, tú eres la razón por la que el cielo tiene sentido. 💖</p>
+    </div>
+
+   <div id="photoCard" class="photo-card">
+  <img src="pau.jpg" alt="Foto especial" />
+</div>
+
+
 
     <div id="spotifyBox" class="spotify-box">
       <p>Tengo otra sorpresa para ti... 🎧</p>
       <a href="https://open.spotify.com/playlist/1Nn67BMQNU564iRybOCpwf?si=4wRvbyHsQHKbp5CFuihXpA"
          target="_blank" class="btn-spotify">Escuchar en Spotify 🎶</a>
     </div>
-
-    <div id="photoBox" class="photo-box">
-      <img src="pau.jpg" alt="Foto especial" />
-    </div>
   </div>
-<!-- Scripts -->
-<script src="fondo.js"></script>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const btn1 = document.getElementById('btn1');
-    const step1 = document.getElementById('step1');
-    const step2 = document.getElementById('step2');
-    const step3 = document.getElementById('step3');
-    const spotifyBox = document.getElementById('spotifyBox');
-    const photoBox = document.getElementById('photoBox');
+  <script src="fondo.js" defer></script>
 
-    btn1.addEventListener('click', () => {
-      step1.classList.add('hidden');
-      step2.classList.remove('hidden');
-      step2.classList.add('fade');
-      setTimeout(() => {
-        step2.classList.add('hidden');
-        step3.classList.remove('hidden');
-        step3.classList.add('fade');
-        typeMessage();
-      }, 3000);
+  <script defer>
+    window.addEventListener('DOMContentLoaded', () => {
+      const btn1 = document.getElementById('btn1');
+      const step1 = document.getElementById('step1');
+      const step2 = document.getElementById('step2');
+      const step3 = document.getElementById('step3');
+      const messageEl = document.getElementById('message');
+      const spotifyBox = document.getElementById('spotifyBox');
+
+      // Ahora buscamos el NUEVO bloque independiente de la foto
+      const photoEl = document.getElementById('photoCard');
+
+      btn1.addEventListener('click', () => {
+        step1.classList.add('hidden');
+        step2.classList.remove('hidden');
+        step2.classList.add('fade');
+
+        setTimeout(() => {
+          step2.classList.add('hidden');
+          step3.classList.remove('hidden');
+          step3.classList.add('fade');
+
+          setTimeout(() => messageEl.classList.add('show'), 800);
+          setTimeout(() => photoEl.classList.add('show'), 2000);
+          setTimeout(() => spotifyBox.classList.add('show'), 3000);
+        }, 3000);
+      });
     });
-
-    const mensaje = "Tu luz brilla más que todas las estrellas del cielo. ❤️";
-
-    function typeMessage() {
-      const target = document.getElementById('typed');
-      let i = 0;
-      const interval = setInterval(() => {
-        target.textContent += mensaje.charAt(i);
-        i++;
-        if (i === mensaje.length) {
-          clearInterval(interval);
-          setTimeout(() => spotifyBox.classList.add('show'), 1200);
-          setTimeout(() => photoBox.classList.add('show'), 3000);
-        }
-      }, 70);
-    }
-  });
-</script>
-
- 
+  </script>
 </body>
 </html>
-
