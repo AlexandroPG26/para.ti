@@ -1,14 +1,16 @@
-/* fondo.css — animación de constelaciones en fondo oscuro */
+/* === fondo.css — Fondo estrellado + estilo pastel === */
 
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: radial-gradient(circle at bottom, #020111 0%, #000 100%);
+  background: radial-gradient(circle at bottom, #17162b 0%, #000 100%);
   overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
 }
 
-/* Canvas de estrellas */
+/* === Fondo animado de estrellas === */
 canvas#stars {
   position: fixed;
   top: 0;
@@ -17,26 +19,180 @@ canvas#stars {
   height: 100%;
   z-index: -1;
   background: transparent;
+  animation: twinkle 3s ease-in-out infinite alternate;
 }
 
-/* Suaviza la transición de brillo general */
 @keyframes twinkle {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.85; }
 }
 
-#stars {
-  animation: twinkle 3s ease-in-out infinite alternate;
-}
-
-/* Estilo opcional de “brillo” general del cielo */
 body::after {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
   pointer-events: none;
+}
+
+/* === Tarjetas pastel (mensaje y Spotify) === */
+.message-box.pastel,
+.spotify-box {
+  position: relative;
+  background: linear-gradient(145deg, rgba(255,192,203,0.25), rgba(255,182,193,0.12));
+  border: 1px solid rgba(255,182,193,0.4);
+  border-radius: 20px;
+  padding: 25px 35px;
+  box-shadow: 0 0 25px rgba(255,192,203,0.25);
+  color: #ffe4f0;
+  text-shadow: 0 0 6px rgba(255,210,230,0.7);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  margin-top: 25px;
+}
+
+.message-box.pastel::before,
+.spotify-box::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 22px;
+  background: linear-gradient(120deg, #ff9ecb, #ffb6c1, #ffcce1, #ff9ecb);
+  background-size: 400% 400%;
+  filter: blur(8px);
+  opacity: 0.7;
+  animation: pastelGlow 6s ease infinite;
+  z-index: -1;
+}
+
+@keyframes pastelGlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.message-box.pastel h2,
+.spotify-box h2 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: #ffd9ec;
+}
+
+.message-box.pastel p,
+.spotify-box p {
+  font-size: 1.05rem;
+  color: #fff0f7;
+  opacity: 0.95;
+}
+
+/* === Botón Spotify === */
+.btn-spotify {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  background: linear-gradient(90deg, #1DB954, #1ed760);
+  color: white;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 30px;
+  box-shadow: 0 0 15px rgba(255,182,193,0.4);
+  border: 2px solid rgba(255,192,203,0.5);
+  transition: transform .3s ease, box-shadow .3s ease;
+  position: relative;
+  z-index: 1;
+}
+.btn-spotify:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(255,182,193,0.8);
+}
+
+/* === Fondo de rosas para la primera pantalla === */
+.roses-bg {
+  background-image: url('rosas.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  border-radius: 0;
+}
+
+.roses-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+/* === Imagen centrada debajo del botón de inicio === */
+.roses-container {
+  position: relative;
+  width: 80%;
+  max-width: 500px;
+  margin-top: 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(255, 182, 193, 0.3);
+}
+.roses-container img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  filter: brightness(85%);
+}
+.roses-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* === FOTO FINAL autoajustable === */
+.photo-card {
+  --photo-size: 180px;
+  --photo-radius: 18px;
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--photo-radius);
+  background: linear-gradient(145deg, rgba(255,192,203,0.22), rgba(255,182,193,0.12));
+  border: 1px solid rgba(255,182,193,0.45);
+  box-shadow: 0 0 25px rgba(255,192,203,0.25);
+  backdrop-filter: blur(8px);
+  padding: 18px 22px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.photo-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--photo-radius) + 2px);
+  background: linear-gradient(120deg, #ff9ecb, #ffb6c1, #ffcce1, #ff9ecb);
+  background-size: 400% 400%;
+  filter: blur(8px);
+  opacity: 0.6;
+  animation: pastelGlow 6s ease infinite;
+  z-index: -1;
+}
+
+.photo-card img {
+  display: block;
+  width: 100%;
+  max-width: 300px;      /* tamaño grande original */
+  height: auto;
+  border-radius: 18px;
+  box-shadow: 0 0 25px rgba(255,255,255,0.35);
+  transition: transform 0.45s ease;
+  object-fit: cover;
+  margin: 0 auto;
+}
+.photo-card img:hover {
+  transform: scale(1.05);
 }
